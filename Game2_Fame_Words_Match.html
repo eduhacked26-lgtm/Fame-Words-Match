@@ -1,0 +1,29 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Game 2: Fame Words Match</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f3f6fb;color:#222}
+.w{max-width:820px;margin:0 auto;padding:16px}h1{color:#0B2F6B}
+.info{background:#fff;border-left:6px solid #0B2F6B;padding:10px 14px;border-radius:6px;font-size:14px;line-height:1.5}
+.g{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.c{background:#0B2F6B;color:#fff;border-radius:10px;min-height:84px;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;font-size:15px;cursor:pointer;user-select:none}
+.c.def{background:#fff;color:#0B2F6B;border:2px solid #0B2F6B;font-size:13px}
+.c.sel{outline:4px solid #f5a623}.c.done{background:#bfe3b4;color:#234;border-color:#6a6;cursor:default}
+.c.bad{background:#f8b4b4}
+button{font-size:15px;padding:10px 16px;border:0;border-radius:8px;background:#0B2F6B;color:#fff;cursor:pointer}
+@media(max-width:560px){.g{grid-template-columns:repeat(2,1fr)}}
+</style></head><body><div class="w"><h1>🎤 Fame Words Match</h1>
+<div class="info"><b>Learning objective:</b> match the ten key words of the lesson with their meanings.<br><b>Level:</b> 1st year secondary (A2). <b>Skill:</b> vocabulary (reading). <b>Teacher tip:</b> use as a warm-up or revision; ask pairs to say a sentence with each matched word before moving on. Watch the stress: ca-REER, a-WARD, am-BI-tion.</div>
+<p id="st"></p><div class="g" id="g"></div><button onclick="init()">New game</button></div>
+<script>
+const W=[["fame","being known by very many people"],["fortune","a very large amount of money"],["career","the work you do for many years"],["award","a prize for doing something very well"],["ambition","a strong wish to be successful"],["achieve","to succeed in doing something difficult"],["publicity","attention from newspapers, TV and the internet"],["earn","to get money for work"],["quit","to stop doing something or to leave it"],["hit","a very popular song or film"]];
+let sel=null,found=0,tries=0;
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a}
+function init(){sel=null;found=0;tries=0;const g=document.getElementById('g');g.innerHTML='';
+shuffle(W.flatMap((w,i)=>[{i,t:w[0],d:0},{i,t:w[1],d:1}])).forEach(o=>{const e=document.createElement('div');e.className='c'+(o.d?' def':'');e.textContent=o.t;e.onclick=()=>pick(e,o);g.appendChild(e)});upd()}
+function upd(){document.getElementById('st').textContent=found==W.length?`Well done! All ${W.length} pairs found in ${tries} tries. 🏅`:`Pairs found: ${found} / ${W.length} • Tries: ${tries}`}
+function pick(e,o){if(e.classList.contains('done')||(sel&&sel.e===e))return;
+if(!sel){sel={e,o};e.classList.add('sel');return}
+tries++;const s=sel;sel=null;s.e.classList.remove('sel');
+if(s.o.i===o.i&&s.o.d!==o.d){s.e.classList.add('done');e.classList.add('done');found++}
+else{[s.e,e].forEach(x=>x.classList.add('bad'));setTimeout(()=>[s.e,e].forEach(x=>x.classList.remove('bad')),600)}upd()}
+init();
+</script></body></html>
